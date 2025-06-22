@@ -1,0 +1,14 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    - prefer_const_constructors
+    - prefer_const_literals_to_create_immutables
+    - prefer_const_declarations
+    - prefer_expression_function_bodies
+    - unnecessary_lambdas
+    - avoid_types_on_closure_parameters
+
+analyzer:
+  errors:
+    invalid_annotation_target: ignore
