@@ -6,4 +6,9 @@ flutter gen-l10n --arb-dir lib/shared/l10n \
   --output-localization-file app_localizations.dart \
   --output-class AppLocalizations
 
+flutter gen-l10n --arb-dir lib/modules/dashboard/l10n \
+  --template-arb-file intl_zh.arb \
+  --output-localization-file dashboard_localizations.dart \
+  --output-class DashboardLocalizations
+
 echo "generate l10n successfully!"
