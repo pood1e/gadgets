@@ -1,0 +1,16 @@
+# Flutter-related
+**/Flutter/ephemeral/
+**/Pods/
+
+# Xcode-related
+**/dgph
+**/xcuserdata/
+
+*.xcuserstate
+*.xcworkspace
+*.xcodeproj/project.xcworkspace/
+*.xcuserdata/
+Runner.xcworkspace/
+
+# icons
+Runner/Assets.xcassets/AppIcon.appiconset/app_icon_*.png
