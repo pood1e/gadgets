@@ -17,7 +17,11 @@ class NavigationRouteDefine {
 }
 
 const navigationRouteDefines = [
-  NavigationRouteDefine(id: 'dashboard', icon: Icon(Icons.apps), route: '/'),
+  NavigationRouteDefine(
+    id: 'dashboard',
+    icon: Icon(Icons.dashboard),
+    route: '/',
+  ),
   NavigationRouteDefine(
     id: 'settings',
     icon: Icon(Icons.settings),
