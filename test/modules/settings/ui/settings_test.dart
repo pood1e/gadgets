@@ -9,12 +9,12 @@ import '../../../test_utils/test_constants.dart';
 
 void main() {
   createTestWidget() => createSinglePageWidget(
-    NavigationRouteDefine(
+    RouteDefine(
       id: 'settings',
       icon: const Icon(Icons.dashboard),
       localizationOf: SettingsLocalizations.of,
       localizationDelegate: SettingsLocalizations.delegate,
-      goRoute: GoRoute(
+      route: GoRoute(
         path: '/settings',
         builder: (_, _) => const SettingsView(),
       ),
@@ -30,7 +30,7 @@ void main() {
 
       // Assert
       expect(find.text('settings'), findsOneWidget);
-      expect(find.text('Settings'), findsOneWidget);
+      expect(find.text('Settings'), findsWidgets);
     });
   });
 }

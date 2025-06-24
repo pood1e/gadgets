@@ -14,15 +14,18 @@ GoRouter createRouter(BuildContext context, ShellRouteBuilder shellBuilder) {
 }
 
 GoRouter createRouterByNavigations(
-  List<NavigationRouteDefine> navigations,
+  List<RouteDefine> navigations,
   String initialRoute,
   ShellRouteBuilder shellBuilder,
 ) => GoRouter(
+  observers: [routeObserver],
   initialLocation: initialRoute,
   routes: [
     ShellRoute(
       builder: shellBuilder,
-      routes: navigations.map((item) => item.goRoute).toList(),
+      routes: navigations.map((item) => item.route).toList(),
     ),
   ],
 );
+
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();

@@ -19,7 +19,7 @@ void main() {
       // Arrange
       bool notified = false;
       viewModel.addListener(() => notified = true);
-      const config = AppBarConfig(id: 'other', title: 'other');
+      const config = AppBarConfig(id: 'other');
 
       // Act
       viewModel.changeConfig(config);

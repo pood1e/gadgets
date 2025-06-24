@@ -9,17 +9,17 @@ import 'package:provider/provider.dart';
 
 import '../l10n/test_localizations.dart';
 
-const presetAppbarConfig = AppBarConfig(id: 'app', title: 'app');
+const presetAppbarConfig = AppBarConfig(id: 'app');
 final presetAppbarViewModel = AppbarViewModel(config: presetAppbarConfig);
 final presetSinglePageNavigation = NavigationViewModel(
   initialRoute: '/',
   navigations: [
-    NavigationRouteDefine(
+    RouteDefine(
       id: 'root',
       icon: const Icon(Icons.home),
       localizationOf: TestLocalizations.of,
       localizationDelegate: TestLocalizations.delegate,
-      goRoute: GoRoute(path: '/', builder: (_, _) => Container()),
+      route: GoRoute(path: '/', builder: (_, _) => Container()),
     ),
   ],
 );
@@ -27,19 +27,19 @@ final presetSinglePageNavigation = NavigationViewModel(
 final presetTwoPageNavigation = NavigationViewModel(
   initialRoute: '/',
   navigations: [
-    NavigationRouteDefine(
+    RouteDefine(
       id: 'root',
       icon: const Icon(Icons.home),
       localizationOf: TestLocalizations.of,
       localizationDelegate: TestLocalizations.delegate,
-      goRoute: GoRoute(path: '/', builder: (_, _) => Container()),
+      route: GoRoute(path: '/', builder: (_, _) => Container()),
     ),
-    NavigationRouteDefine(
+    RouteDefine(
       id: 'test',
       icon: const Icon(Icons.cabin),
       localizationOf: TestLocalizations.of,
       localizationDelegate: TestLocalizations.delegate,
-      goRoute: GoRoute(path: '/test', builder: (_, _) => Container()),
+      route: GoRoute(path: '/test', builder: (_, _) => Container()),
     ),
   ],
 );
@@ -51,12 +51,12 @@ final presetProviders = List.unmodifiable([
   Provider.value(value: presetL10ViewModel),
 ]);
 
-Widget createSinglePageWidget(NavigationRouteDefine define) => MultiProvider(
+Widget createSinglePageWidget(RouteDefine define) => MultiProvider(
   providers: [
     Provider.value(value: L10nViewModel(locale: const Locale('en'))),
     Provider.value(
       value: NavigationViewModel(
-        initialRoute: define.goRoute.path,
+        initialRoute: define.route.path,
         navigations: [define],
       ),
     ),

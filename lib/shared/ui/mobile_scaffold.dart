@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gadgets/shared/ui/logo_component.dart';
 import 'package:gadgets/shared/ui/navigation_component.dart';
 import 'package:gadgets/shared/view_models/appbar_view_model.dart';
+import 'package:gadgets/shared/view_models/current_route_view_model.dart';
 import 'package:gadgets/shared/view_models/navigation_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -35,16 +36,21 @@ class _MobileDrawer extends StatelessWidget {
     width: NavigationRailWrapper.sidebarExpandWidth,
     child: Column(
       children: [
-        _ExpandedLogoHeader(
-          end: IconButton(
-            onPressed: () => _closeDrawer(context),
-            icon: const Icon(Icons.close),
+        SafeArea(
+          child: _ExpandedLogoHeader(
+            end: IconButton(
+              onPressed: () => _closeDrawer(context),
+              icon: const Icon(Icons.close),
+            ),
           ),
         ),
         Expanded(
-          child: NavigationRailWrapper(
-            items: context.read<NavigationViewModel>().navigations,
-            onItemSelected: (_) => _closeDrawer(context),
+          child: Consumer<CurrentRouteViewModel>(
+            builder: (context, vm, child) => NavigationRailWrapper(
+              define: vm.current,
+              items: context.read<NavigationViewModel>().navigations,
+              onPush: (_) => _closeDrawer(context),
+            ),
           ),
         ),
       ],
@@ -76,32 +82,32 @@ class _MobileAppbar extends StatelessWidget implements PreferredSizeWidget {
   const _MobileAppbar();
 
   @override
-  Widget build(BuildContext context) => Selector<AppbarViewModel, AppBarConfig>(
-    selector: (context, viewModel) => viewModel.currentConfig,
-    builder: (context, config, child) {
-      final isRoot = GoRouterState.of(context).uri.path == '/';
-      Widget? menu;
-      if (isRoot) {
-        menu = IconButton(
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-          icon: const Icon(Icons.menu),
+  Widget build(BuildContext context) => Consumer<AppbarViewModel>(
+    builder: (_, barVm, _) => Consumer<CurrentRouteViewModel>(
+      builder: (_, routeVm, _) {
+        Widget? menu;
+        if (routeVm.isRoot()) {
+          menu = IconButton(
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+            icon: const Icon(Icons.menu),
+          );
+        } else {
+          menu = BackButton(
+            onPressed: () {
+              context.pop();
+            },
+          );
+        }
+        return AppBar(
+          leading: menu,
+          centerTitle: true,
+          title: Text(routeVm.current.localizationOf(context).title),
+          actions: barVm.currentConfig.actions,
         );
-      } else {
-        menu = BackButton(
-          onPressed: () {
-            context.pop();
-          },
-        );
-      }
-      return AppBar(
-        leading: menu,
-        centerTitle: true,
-        title: Text(config.title),
-        actions: config.actions,
-      );
-    },
+      },
+    ),
   );
 
   @override

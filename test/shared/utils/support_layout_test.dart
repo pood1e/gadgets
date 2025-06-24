@@ -10,22 +10,14 @@ import 'support_layout_test.mocks.dart';
 void main() {
   group('SupportLayout', () {
     group('judge method', () {
-      test(
-        'should return desktop when width >= 800 and screenWidth >= 1024',
-        () {
-          // Arrange & Act & Assert
-          expect(SupportLayout.judge(1024, 800), equals(SupportLayout.desktop));
-        },
-      );
-
-      test('should return mobile when screenWidth < 1024', () {
+      test('should return desktop when width >= 800', () {
         // Arrange & Act & Assert
-        expect(SupportLayout.judge(1000, 800), equals(SupportLayout.mobile));
+        expect(SupportLayout.judge(800), equals(SupportLayout.desktop));
       });
 
-      test('should return mobile when screenWidth < 1024', () {
+      test('should return mobile when width < 800', () {
         // Arrange & Act & Assert
-        expect(SupportLayout.judge(1024, 750), equals(SupportLayout.mobile));
+        expect(SupportLayout.judge(750), equals(SupportLayout.mobile));
       });
     });
 

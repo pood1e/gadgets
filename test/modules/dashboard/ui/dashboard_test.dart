@@ -9,12 +9,12 @@ import '../../../test_utils/test_constants.dart';
 
 void main() {
   createTestWidget() => createSinglePageWidget(
-    NavigationRouteDefine(
+    RouteDefine(
       id: 'dashboard',
       icon: const Icon(Icons.dashboard),
       localizationOf: DashboardLocalizations.of,
       localizationDelegate: DashboardLocalizations.delegate,
-      goRoute: GoRoute(path: '/', builder: (_, _) => const DashboardView()),
+      route: GoRoute(path: '/', builder: (_, _) => const DashboardView()),
     ),
   );
 
@@ -27,7 +27,7 @@ void main() {
 
       // Assert
       expect(find.text('dashboard'), findsOneWidget);
-      expect(find.text('Dashboard'), findsOneWidget);
+      expect(find.text('Dashboard'), findsWidgets);
     });
   });
 }

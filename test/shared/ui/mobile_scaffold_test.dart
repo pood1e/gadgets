@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:gadgets/main.dart';
 import 'package:gadgets/shared/routing/router.dart';
 import 'package:gadgets/shared/ui/mobile_scaffold.dart';
-import 'package:gadgets/shared/view_models/appbar_view_model.dart';
+import 'package:gadgets/shared/ui/shell_scaffold.dart';
 import 'package:gadgets/shared/view_models/navigation_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -12,16 +12,11 @@ import '../../test_utils/test_constants.dart';
 
 void main() {
   group('MobileScaffold', () {
-    Widget createTestWidget({
-      AppbarViewModel? provider,
-      NavigationViewModel? navProvider,
-    }) {
+    Widget createTestWidget({NavigationViewModel? navProvider}) {
       final nav = navProvider ?? presetTwoPageNavigation;
       return MultiProvider(
         providers: [
-          ChangeNotifierProvider.value(
-            value: provider ?? presetAppbarViewModel,
-          ),
+          ChangeNotifierProvider.value(value: presetAppbarViewModel),
           Provider.value(value: nav),
           Provider.value(value: presetL10ViewModel),
         ],
@@ -29,7 +24,10 @@ void main() {
           router: createRouterByNavigations(
             nav.navigations,
             nav.initialRoute,
-            (_, _, child) => MobileScaffold(child: child),
+            (_, state, child) => ShellScaffold(
+              state: state,
+              child: MobileScaffold(child: child),
+            ),
           ),
         ),
       );
@@ -89,16 +87,14 @@ void main() {
 
       testWidgets('should have an appbar', (tester) async {
         // Arrange
-        const appbarConfig = AppBarConfig(id: 'for-test', title: 'for-test');
-        final appbarProvider = AppbarViewModel(config: appbarConfig);
         // Act
-        await tester.pumpWidget(createTestWidget(provider: appbarProvider));
+        await tester.pumpWidget(createTestWidget());
 
         // Assert
         expect(
           find.descendant(
             of: find.byType(AppBar),
-            matching: find.text(appbarConfig.title),
+            matching: find.text('Gadgets'),
           ),
           findsOneWidget,
         );

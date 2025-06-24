@@ -5,39 +5,39 @@ import 'package:gadgets/modules/settings/l10n/settings_localizations.dart';
 import 'package:gadgets/modules/settings/ui/settings.dart';
 import 'package:go_router/go_router.dart';
 
-class NavigationRouteDefine {
+class RouteDefine {
   final String id;
   final Widget icon;
   final dynamic Function(BuildContext) localizationOf;
   final LocalizationsDelegate<dynamic> localizationDelegate;
-  final GoRoute goRoute;
+  final GoRoute route;
 
-  const NavigationRouteDefine({
+  const RouteDefine({
     required this.id,
     required this.icon,
     required this.localizationOf,
     required this.localizationDelegate,
-    required this.goRoute,
+    required this.route,
   });
 }
 
 final navigationRouteDefines = [
-  NavigationRouteDefine(
+  RouteDefine(
     id: 'dashboard',
     icon: const Icon(Icons.dashboard),
     localizationOf: (ctx) => DashboardLocalizations.of(ctx)!,
     localizationDelegate: DashboardLocalizations.delegate,
-    goRoute: GoRoute(
+    route: GoRoute(
       path: '/',
       builder: (context, state) => const DashboardView(),
     ),
   ),
-  NavigationRouteDefine(
+  RouteDefine(
     id: 'settings',
     icon: const Icon(Icons.settings),
     localizationOf: (ctx) => SettingsLocalizations.of(ctx)!,
     localizationDelegate: SettingsLocalizations.delegate,
-    goRoute: GoRoute(
+    route: GoRoute(
       path: '/settings',
       builder: (context, state) => const SettingsView(),
     ),

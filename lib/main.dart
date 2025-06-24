@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gadgets/shared/routing/router.dart';
 import 'package:gadgets/shared/ui/responsive_scaffold.dart';
+import 'package:gadgets/shared/ui/shell_scaffold.dart';
 import 'package:gadgets/shared/view_models/l10n_view_model.dart';
 import 'package:gadgets/shared/view_models/navigation_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  // debugPrintRebuildDirtyWidgets = true;
   runApp(
     MultiProvider(
       providers: [
@@ -36,7 +38,10 @@ class MyApp extends StatelessWidget {
           _router ??
           createRouter(
             context,
-            (_, _, child) => ResponsiveScaffold(child: child),
+            (_, state, child) => ShellScaffold(
+              state: state,
+              child: ResponsiveScaffold(child: child),
+            ),
           ),
     );
   }

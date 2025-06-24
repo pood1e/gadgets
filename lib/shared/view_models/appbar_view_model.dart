@@ -2,15 +2,11 @@ import 'package:flutter/widgets.dart';
 
 class AppBarConfig {
   final String id;
-  final String title;
   final List<Widget>? actions;
 
-  const AppBarConfig({required this.id, required this.title, this.actions});
+  const AppBarConfig({required this.id, this.actions});
 
-  const AppBarConfig._preset()
-    : id = 'default',
-      title = 'Gadgets',
-      actions = null;
+  const AppBarConfig._preset() : id = 'default', actions = null;
 
   const factory AppBarConfig.preset() = AppBarConfig._preset;
 }

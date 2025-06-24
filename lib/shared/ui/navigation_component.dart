@@ -4,38 +4,33 @@ import 'package:go_router/go_router.dart';
 
 /// 标准导航栏
 abstract class _MyNavigationRail extends StatelessWidget {
-  final List<NavigationRouteDefine> _items;
+  final List<RouteDefine> _items;
   final bool _extended;
-
-  bool get extended => _extended;
-
-  List<NavigationRouteDefine> get items => List.unmodifiable(_items);
+  final RouteDefine _define;
+  final Function(RouteDefine)? _onPush;
 
   const _MyNavigationRail({
     super.key,
     bool? extended,
-    required List<NavigationRouteDefine> items,
+    required List<RouteDefine> items,
+    required RouteDefine define,
+    void Function(RouteDefine)? onPush,
   }) : _extended = extended ?? true,
-       _items = items;
+       _items = items,
+       _define = define,
+       _onPush = onPush;
 
-  int? currentSelected(BuildContext context) {
-    final currentPath = GoRouterState.of(context).uri.path;
-    return _items.indexWhere((item) {
-      if (item.goRoute.path == '/') {
-        return currentPath == '/';
-      } else {
-        return currentPath.startsWith(item.goRoute.path);
-      }
-    });
-  }
+  int? _currentSelected() => _items.indexWhere((item) => item == _define);
 
-  String translateText(BuildContext context, NavigationRouteDefine define) =>
+  String translateText(BuildContext context, RouteDefine define) =>
       define.localizationOf(context).title;
 
-  void onItemSelected(BuildContext context, NavigationRouteDefine item) {
-    final currentPath = GoRouterState.of(context).uri.path;
-    if (currentPath != item.goRoute.path) {
-      context.push(item.goRoute.path);
+  void _onItemSelected(BuildContext context, RouteDefine item) {
+    if (item != _define) {
+      context.push(item.route.path);
+      if (_onPush != null) {
+        _onPush(item);
+      }
     }
   }
 }
@@ -45,22 +40,21 @@ class NavigationRailWrapper extends _MyNavigationRail {
   const NavigationRailWrapper({
     super.key,
     super.extended,
+    super.onPush,
+    required super.define,
     required super.items,
     Widget? leading,
     Widget? trailing,
-    void Function(NavigationRouteDefine)? onItemSelected,
   }) : _leading = leading,
-       _trailing = trailing,
-       _onItemSelected = onItemSelected;
+       _trailing = trailing;
 
   final Widget? _leading;
   final Widget? _trailing;
-  final void Function(NavigationRouteDefine)? _onItemSelected;
 
   static const sidebarExpandWidth = 256.0;
   static const sidebarCollapseWidth = 72.0;
 
-  List<NavigationRailDestination> navItems(BuildContext context) => items
+  List<NavigationRailDestination> _navItems(BuildContext context) => _items
       .map(
         (item) => NavigationRailDestination(
           icon: item.icon,
@@ -73,16 +67,13 @@ class NavigationRailWrapper extends _MyNavigationRail {
   Widget build(BuildContext context) => NavigationRail(
     leading: _leading,
     trailing: _trailing,
-    extended: extended,
+    extended: _extended,
     minWidth: sidebarCollapseWidth,
     minExtendedWidth: sidebarExpandWidth,
-    destinations: navItems(context),
-    selectedIndex: currentSelected(context),
+    destinations: _navItems(context),
+    selectedIndex: _currentSelected(),
     onDestinationSelected: (index) {
-      onItemSelected(context, items[index]);
-      if (_onItemSelected != null) {
-        _onItemSelected(items[index]);
-      }
+      _onItemSelected(context, _items[index]);
     },
   );
 }

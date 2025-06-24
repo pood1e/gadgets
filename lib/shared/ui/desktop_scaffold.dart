@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gadgets/shared/ui/navigation_component.dart';
 import 'package:gadgets/shared/view_models/appbar_view_model.dart';
+import 'package:gadgets/shared/view_models/current_route_view_model.dart';
 import 'package:gadgets/shared/view_models/navigation_view_model.dart';
 import 'package:gadgets/shared/view_models/show_menu_view_model.dart';
 import 'package:provider/provider.dart';
@@ -9,8 +10,6 @@ import 'logo_component.dart';
 
 class DesktopScaffold extends StatelessWidget {
   final Widget _child;
-
-  Widget _buildAppbar() => const _DesktopAppbar();
 
   const DesktopScaffold({super.key, required Widget child}) : _child = child;
 
@@ -23,7 +22,7 @@ class DesktopScaffold extends StatelessWidget {
         Expanded(
           child: Column(
             children: [
-              _buildAppbar(),
+              const _DesktopAppbar(),
               Expanded(child: _child),
             ],
           ),
@@ -74,13 +73,16 @@ class _DesktopSidebarState extends State<_DesktopSidebar> {
       onExit: (_) {
         _viewModel.updateHover(false);
       },
-      child: NavigationRailWrapper(
-        extended: _extended,
-        leading: ChangeNotifierProvider.value(
-          value: _viewModel,
-          child: _LogoSection(onSetExtended: _setExtended),
+      child: Consumer<CurrentRouteViewModel>(
+        builder: (_, vm, _) => NavigationRailWrapper(
+          define: vm.current,
+          extended: _extended,
+          leading: ChangeNotifierProvider.value(
+            value: _viewModel,
+            child: _LogoSection(onSetExtended: _setExtended),
+          ),
+          items: context.read<NavigationViewModel>().navigations,
         ),
-        items: context.read<NavigationViewModel>().navigations,
       ),
     ),
   );
@@ -90,17 +92,19 @@ class _DesktopAppbar extends StatelessWidget implements PreferredSizeWidget {
   const _DesktopAppbar();
 
   @override
-  Widget build(BuildContext context) => Selector<AppbarViewModel, AppBarConfig>(
-    selector: (_, vm) => vm.currentConfig,
-    builder: (_, config, _) =>
-        AppBar(title: Text(config.title), actions: config.actions),
+  Widget build(BuildContext context) => Consumer<AppbarViewModel>(
+    builder: (context, vm, child) =>
+        AppBar(title: child, actions: vm.currentConfig.actions),
+    child: Consumer<CurrentRouteViewModel>(
+      builder: (context, vm, child) =>
+          Text(vm.current.localizationOf(context).title),
+    ),
   );
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
-// 独立的 Logo 组件，减少重建范围
 class _LogoSection extends StatelessWidget {
   final ValueSetter<bool> onSetExtended;
 
@@ -149,7 +153,7 @@ class _LogoSection extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerRight,
               child: Opacity(
-                opacity: animation.value, // 根据动画值控制透明度
+                opacity: animation.value,
                 child: Transform.scale(
                   scale: animation.value,
                   child: Wrap(

@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:gadgets/main.dart';
 import 'package:gadgets/shared/routing/router.dart';
 import 'package:gadgets/shared/ui/navigation_component.dart';
+import 'package:gadgets/shared/ui/shell_scaffold.dart';
+import 'package:gadgets/shared/view_models/current_route_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -20,11 +22,15 @@ void main() {
         router: createRouterByNavigations(
           presetTwoPageNavigation.navigations,
           presetTwoPageNavigation.initialRoute,
-          (_, _, child) => Scaffold(
-            body: Row(
+          (_, state, child) => ShellScaffold(
+            state: state,
+            child: Row(
               children: [
-                NavigationRailWrapper(
-                  items: presetTwoPageNavigation.navigations,
+                Consumer<CurrentRouteViewModel>(
+                  builder: (context, value, child) => NavigationRailWrapper(
+                    define: value.current,
+                    items: presetTwoPageNavigation.navigations,
+                  ),
                 ),
                 child,
               ],
