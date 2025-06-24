@@ -1,41 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:gadgets/modules/dashboard/l10n/dashboard_localizations.dart';
-import 'package:gadgets/modules/settings/l10n/settings_localizations.dart';
-import 'package:gadgets/shared/l10n/app_localizations.dart';
-import 'package:gadgets/shared/routing/routers.dart';
+import 'package:gadgets/shared/routing/router.dart';
 import 'package:gadgets/shared/ui/responsive_scaffold.dart';
+import 'package:gadgets/shared/view_models/l10n_view_model.dart';
+import 'package:gadgets/shared/view_models/navigation_view_model.dart';
 import 'package:go_router/go_router.dart';
-
-GoRouter _router = GoRouter(
-  initialLocation: '/',
-  routes: [
-    ShellRoute(
-      builder: (context, state, child) => ResponsiveScaffold(child: child),
-      routes: navigationRouteDefines.map((item) => item.goRoute).toList(),
-    ),
-  ],
-);
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider.value(value: NavigationViewModel()),
+        Provider.value(value: L10nViewModel()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final GoRouter? _router;
+
+  const MyApp({super.key, GoRouter? router}) : _router = router;
 
   @override
-  Widget build(BuildContext context) => MaterialApp.router(
-    debugShowCheckedModeBanner: false,
-    localizationsDelegates: const [
-      AppLocalizations.delegate,
-      DashboardLocalizations.delegate,
-      SettingsLocalizations.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-    ],
-    supportedLocales: const [Locale('zh'), Locale('en')],
-    routerConfig: _router,
-  );
+  Widget build(BuildContext context) {
+    final l10n = context.read<L10nViewModel>();
+    final navigation = context.read<NavigationViewModel>();
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: navigation.localizationsDelegates,
+      supportedLocales: l10n.supportedLocales,
+      locale: l10n.locale,
+      routerConfig:
+          _router ??
+          createRouter(
+            context,
+            (_, _, child) => ResponsiveScaffold(child: child),
+          ),
+    );
+  }
 }

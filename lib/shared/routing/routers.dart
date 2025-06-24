@@ -1,50 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:gadgets/modules/dashboard/l10n/dashboard_localizations.dart';
 import 'package:gadgets/modules/dashboard/ui/dashboard.dart';
+import 'package:gadgets/modules/settings/l10n/settings_localizations.dart';
 import 'package:gadgets/modules/settings/ui/settings.dart';
-import 'package:gadgets/shared/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 class NavigationRouteDefine {
   final String id;
   final Widget icon;
-  final String route;
+  final dynamic Function(BuildContext) localizationOf;
+  final LocalizationsDelegate<dynamic> localizationDelegate;
+  final GoRoute goRoute;
 
   const NavigationRouteDefine({
     required this.id,
     required this.icon,
-    required this.route,
+    required this.localizationOf,
+    required this.localizationDelegate,
+    required this.goRoute,
   });
 }
 
-const navigationRouteDefines = [
+final navigationRouteDefines = [
   NavigationRouteDefine(
     id: 'dashboard',
-    icon: Icon(Icons.dashboard),
-    route: '/',
+    icon: const Icon(Icons.dashboard),
+    localizationOf: (ctx) => DashboardLocalizations.of(ctx)!,
+    localizationDelegate: DashboardLocalizations.delegate,
+    goRoute: GoRoute(
+      path: '/',
+      builder: (context, state) => const DashboardView(),
+    ),
   ),
   NavigationRouteDefine(
     id: 'settings',
-    icon: Icon(Icons.settings),
-    route: '/settings',
-  ),
-];
-
-extension RouteDefineEnhancer on NavigationRouteDefine {
-  String translate(AppLocalizations l10n) => switch (id) {
-    'dashboard' => l10n.dashboard,
-    'settings' => l10n.settings,
-    _ => throw Exception('have no localization defined'),
-  };
-
-  GoRoute get goRoute => switch (id) {
-    'dashboard' => GoRoute(
-      path: route,
-      builder: (context, state) => const DashboardView(),
-    ),
-    'settings' => GoRoute(
-      path: route,
+    icon: const Icon(Icons.settings),
+    localizationOf: (ctx) => SettingsLocalizations.of(ctx)!,
+    localizationDelegate: SettingsLocalizations.delegate,
+    goRoute: GoRoute(
+      path: '/settings',
       builder: (context, state) => const SettingsView(),
     ),
-    _ => throw Exception('have no GoRoute defined'),
-  };
-}
+  ),
+];

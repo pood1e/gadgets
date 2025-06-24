@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gadgets/shared/ui/logo_component.dart';
 import 'package:gadgets/shared/ui/navigation_component.dart';
 import 'package:gadgets/shared/view_models/appbar_view_model.dart';
+import 'package:gadgets/shared/view_models/navigation_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +22,13 @@ class MobileScaffold extends StatelessWidget {
 class _MobileDrawer extends StatelessWidget {
   const _MobileDrawer();
 
+  void _closeDrawer(BuildContext context) {
+    final state = Scaffold.of(context);
+    if (state.isDrawerOpen) {
+      state.closeDrawer();
+    }
+  }
+
   @override
   Widget build(BuildContext context) => Drawer(
     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
@@ -29,16 +37,16 @@ class _MobileDrawer extends StatelessWidget {
       children: [
         _ExpandedLogoHeader(
           end: IconButton(
-            onPressed: () {
-              final state = Scaffold.of(context);
-              if (state.isDrawerOpen) {
-                state.closeDrawer();
-              }
-            },
+            onPressed: () => _closeDrawer(context),
             icon: const Icon(Icons.close),
           ),
         ),
-        const Expanded(child: NavigationRailWrapper(extended: true)),
+        Expanded(
+          child: NavigationRailWrapper(
+            items: context.read<NavigationViewModel>().navigations,
+            onItemSelected: (_) => _closeDrawer(context),
+          ),
+        ),
       ],
     ),
   );

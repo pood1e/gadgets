@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gadgets/shared/ui/navigation_component.dart';
 import 'package:gadgets/shared/view_models/appbar_view_model.dart';
+import 'package:gadgets/shared/view_models/navigation_view_model.dart';
 import 'package:gadgets/shared/view_models/show_menu_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -39,24 +40,6 @@ class _DesktopSidebar extends StatefulWidget {
   State<StatefulWidget> createState() => _DesktopSidebarState();
 }
 
-class _NavigationRailWithLeading extends NavigationRailWrapper {
-  final Widget? _leading;
-
-  const _NavigationRailWithLeading({super.extended, required Widget? leading})
-    : _leading = leading;
-
-  @override
-  Widget build(BuildContext context) => NavigationRail(
-    leading: _leading,
-    extended: extended,
-    minWidth: NavigationRailWrapper.sidebarCollapseWidth,
-    minExtendedWidth: NavigationRailWrapper.sidebarExpandWidth,
-    destinations: navItems(context),
-    selectedIndex: currentSelected(context),
-    onDestinationSelected: (index) => onItemSelected(context, items[index]),
-  );
-}
-
 class _DesktopSidebarState extends State<_DesktopSidebar> {
   bool _extended = false;
   late ShowMenuViewModel _viewModel;
@@ -91,12 +74,13 @@ class _DesktopSidebarState extends State<_DesktopSidebar> {
       onExit: (_) {
         _viewModel.updateHover(false);
       },
-      child: _NavigationRailWithLeading(
+      child: NavigationRailWrapper(
         extended: _extended,
         leading: ChangeNotifierProvider.value(
           value: _viewModel,
           child: _LogoSection(onSetExtended: _setExtended),
         ),
+        items: context.read<NavigationViewModel>().navigations,
       ),
     ),
   );

@@ -1,0 +1,65 @@
+import 'package:flutter/material.dart';
+import 'package:gadgets/main.dart';
+import 'package:gadgets/shared/routing/routers.dart';
+import 'package:gadgets/shared/view_models/appbar_view_model.dart';
+import 'package:gadgets/shared/view_models/l10n_view_model.dart';
+import 'package:gadgets/shared/view_models/navigation_view_model.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+
+import '../l10n/test_localizations.dart';
+
+const presetAppbarConfig = AppBarConfig(id: 'app', title: 'app');
+final presetAppbarViewModel = AppbarViewModel(config: presetAppbarConfig);
+final presetSinglePageNavigation = NavigationViewModel(
+  initialRoute: '/',
+  navigations: [
+    NavigationRouteDefine(
+      id: 'root',
+      icon: const Icon(Icons.home),
+      localizationOf: TestLocalizations.of,
+      localizationDelegate: TestLocalizations.delegate,
+      goRoute: GoRoute(path: '/', builder: (_, _) => Container()),
+    ),
+  ],
+);
+
+final presetTwoPageNavigation = NavigationViewModel(
+  initialRoute: '/',
+  navigations: [
+    NavigationRouteDefine(
+      id: 'root',
+      icon: const Icon(Icons.home),
+      localizationOf: TestLocalizations.of,
+      localizationDelegate: TestLocalizations.delegate,
+      goRoute: GoRoute(path: '/', builder: (_, _) => Container()),
+    ),
+    NavigationRouteDefine(
+      id: 'test',
+      icon: const Icon(Icons.cabin),
+      localizationOf: TestLocalizations.of,
+      localizationDelegate: TestLocalizations.delegate,
+      goRoute: GoRoute(path: '/test', builder: (_, _) => Container()),
+    ),
+  ],
+);
+
+final presetL10ViewModel = L10nViewModel();
+
+final presetProviders = List.unmodifiable([
+  Provider.value(value: presetSinglePageNavigation),
+  Provider.value(value: presetL10ViewModel),
+]);
+
+Widget createSinglePageWidget(NavigationRouteDefine define) => MultiProvider(
+  providers: [
+    Provider.value(value: L10nViewModel(locale: const Locale('en'))),
+    Provider.value(
+      value: NavigationViewModel(
+        initialRoute: define.goRoute.path,
+        navigations: [define],
+      ),
+    ),
+  ],
+  child: const MyApp(),
+);

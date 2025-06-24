@@ -1,45 +1,36 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gadgets/shared/l10n/app_localizations.dart';
+import 'package:gadgets/main.dart';
+import 'package:gadgets/shared/routing/router.dart';
 import 'package:gadgets/shared/ui/desktop_scaffold.dart';
 import 'package:gadgets/shared/view_models/appbar_view_model.dart';
-import 'package:go_router/go_router.dart';
+import 'package:gadgets/shared/view_models/navigation_view_model.dart';
 import 'package:provider/provider.dart';
+
+import '../../test_utils/test_constants.dart';
 
 void main() {
   group('DesktopScaffold', () {
-    late AppbarViewModel viewModel;
-
-    setUp(() {
-      const appbarConfig = AppBarConfig(id: 'app', title: 'app');
-      viewModel = AppbarViewModel(config: appbarConfig);
-    });
-
     Widget createTestWidget({
       AppbarViewModel? provider,
-      GoRouter Function(Widget Function(Widget child) builder)? routerBuilder,
+      NavigationViewModel? navProvider,
     }) {
-      widgetBuilder(Widget child) => ChangeNotifierProvider<AppbarViewModel>(
-        create: (_) => provider ?? viewModel,
-        child: DesktopScaffold(child: child),
-      );
-      final testRouterBuilder =
-          routerBuilder ??
-          (builder) => GoRouter(
-            initialLocation: '/',
-            routes: [
-              ShellRoute(
-                builder: (_, _, child) => builder(child),
-                routes: [
-                  GoRoute(path: '/', builder: (context, state) => Container()),
-                ],
-              ),
-            ],
-          );
-      return MaterialApp.router(
-        routerConfig: testRouterBuilder(widgetBuilder),
-        localizationsDelegates: const [AppLocalizations.delegate],
+      final nav = navProvider ?? presetSinglePageNavigation;
+      return MultiProvider(
+        providers: [
+          ChangeNotifierProvider.value(
+              value: provider ?? presetAppbarViewModel),
+          Provider.value(value: nav),
+          Provider.value(value: presetL10ViewModel),
+        ],
+        child: MyApp(
+          router: createRouterByNavigations(
+            nav.navigations,
+            nav.initialRoute,
+            (_, _, child) => DesktopScaffold(child: child),
+          ),
+        ),
       );
     }
 

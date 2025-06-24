@@ -7,13 +7,17 @@ class AppBarConfig {
 
   const AppBarConfig({required this.id, required this.title, this.actions});
 
-  factory AppBarConfig.preset() =>
-      const AppBarConfig(id: 'default', title: 'Gadgets');
+  const AppBarConfig._preset()
+    : id = 'default',
+      title = 'Gadgets',
+      actions = null;
+
+  const factory AppBarConfig.preset() = AppBarConfig._preset;
 }
 
 class AppbarViewModel extends ChangeNotifier {
   AppbarViewModel({AppBarConfig? config})
-    : _current = config ?? AppBarConfig.preset();
+    : _current = config ?? const AppBarConfig.preset();
 
   AppBarConfig _current;
 

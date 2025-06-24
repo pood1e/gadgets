@@ -1,47 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gadgets/shared/l10n/app_localizations.dart';
+import 'package:gadgets/main.dart';
+import 'package:gadgets/shared/routing/router.dart';
 import 'package:gadgets/shared/ui/mobile_scaffold.dart';
 import 'package:gadgets/shared/view_models/appbar_view_model.dart';
+import 'package:gadgets/shared/view_models/navigation_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../test_utils/test_constants.dart';
+
 void main() {
   group('MobileScaffold', () {
-    late AppbarViewModel viewModel;
-
-    setUp(() {
-      const appbarConfig = AppBarConfig(id: 'app', title: 'app');
-      viewModel = AppbarViewModel(config: appbarConfig);
-    });
-
     Widget createTestWidget({
       AppbarViewModel? provider,
-      GoRouter Function(Widget Function(Widget child) builder)? routerBuilder,
+      NavigationViewModel? navProvider,
     }) {
-      widgetBuilder(Widget child) => ChangeNotifierProvider<AppbarViewModel>(
-        create: (_) => provider ?? viewModel,
-        child: MobileScaffold(child: child),
-      );
-      final testRouterBuilder =
-          routerBuilder ??
-          (builder) => GoRouter(
-            initialLocation: '/',
-            routes: [
-              ShellRoute(
-                builder: (_, _, child) => builder(child),
-                routes: [
-                  GoRoute(path: '/', builder: (context, state) => Container()),
-                ],
-              ),
-            ],
-          );
-      return MaterialApp.router(
-        routerConfig: testRouterBuilder(widgetBuilder),
-        localizationsDelegates: const [AppLocalizations.delegate],
+      final nav = navProvider ?? presetTwoPageNavigation;
+      return MultiProvider(
+        providers: [
+          ChangeNotifierProvider.value(
+            value: provider ?? presetAppbarViewModel,
+          ),
+          Provider.value(value: nav),
+          Provider.value(value: presetL10ViewModel),
+        ],
+        child: MyApp(
+          router: createRouterByNavigations(
+            nav.navigations,
+            nav.initialRoute,
+            (_, _, child) => MobileScaffold(child: child),
+          ),
+        ),
       );
     }
-
 
     group('Drawer', () {
       ScaffoldState getScaffoldState(WidgetTester tester) =>
@@ -86,33 +78,14 @@ void main() {
     });
 
     group('Appbar', () {
-      late GoRouter router;
-
       Finder findBackButton() => find.descendant(
         of: find.byType(AppBar),
         matching: find.byType(BackButton),
       );
 
-      createTestWidgetWithRouter() => createTestWidget(
-        routerBuilder: (builder) {
-          router = GoRouter(
-            initialLocation: '/',
-            routes: [
-              ShellRoute(
-                builder: (_, _, child) => builder(child),
-                routes: [
-                  GoRoute(path: '/', builder: (context, state) => Container()),
-                  GoRoute(
-                    path: '/test',
-                    builder: (context, state) => Container(),
-                  ),
-                ],
-              ),
-            ],
-          );
-          return router;
-        },
-      );
+      GoRouter getRouter(WidgetTester tester) =>
+          tester.widget<MaterialApp>(find.byType(MaterialApp)).routerConfig
+              as GoRouter;
 
       testWidgets('should have an appbar', (tester) async {
         // Arrange
@@ -133,31 +106,31 @@ void main() {
 
       testWidgets('should not show back button on root route', (tester) async {
         // Arrange & Act
-        await tester.pumpWidget(createTestWidgetWithRouter());
+        await tester.pumpWidget(createTestWidget());
 
         // Assert
-        expect(router.state.path, '/');
+        expect(getRouter(tester).state.path, '/');
         expect(findBackButton(), findsNothing);
       });
 
       testWidgets('should show back button on non-root routes', (tester) async {
         // Arrange
-        await tester.pumpWidget(createTestWidgetWithRouter());
+        await tester.pumpWidget(createTestWidget());
 
         // Act
-        router.push('/test');
+        getRouter(tester).push('/test');
         await tester.pumpAndSettle();
 
         // Assert
-        expect(router.state.path, '/test');
+        expect(getRouter(tester).state.path, '/test');
         expect(findBackButton(), findsOneWidget);
       });
       testWidgets('should navigate back when tapped back button', (
         tester,
       ) async {
         // Arrange
-        await tester.pumpWidget(createTestWidgetWithRouter());
-        router.push('/test');
+        await tester.pumpWidget(createTestWidget());
+        getRouter(tester).push('/test');
         await tester.pumpAndSettle();
 
         // Act
@@ -165,7 +138,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Assert
-        expect(router.state.path, '/');
+        expect(getRouter(tester).state.path, '/');
         expect(findBackButton(), findsNothing);
       });
     });

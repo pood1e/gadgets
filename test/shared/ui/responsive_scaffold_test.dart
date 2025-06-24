@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gadgets/shared/l10n/app_localizations.dart';
-import 'package:gadgets/shared/routing/routers.dart';
+import 'package:gadgets/main.dart';
+import 'package:gadgets/shared/routing/router.dart';
 import 'package:gadgets/shared/ui/desktop_scaffold.dart';
 import 'package:gadgets/shared/ui/mobile_scaffold.dart';
 import 'package:gadgets/shared/ui/responsive_scaffold.dart';
-import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+
+import '../../test_utils/test_constants.dart';
 
 void main() {
-  createTestWidget(Widget Function(Widget child) builder) => MaterialApp.router(
-    localizationsDelegates: AppLocalizations.localizationsDelegates,
-    supportedLocales: const [Locale('en'), Locale('zh')],
-    routerConfig: GoRouter(
-      initialLocation: '/',
-      routes: [
-        ShellRoute(
-          builder: (context, state, child) =>
-              builder(ResponsiveScaffold(child: child)),
-          routes: navigationRouteDefines.map((item) => item.goRoute).toList(),
+  Widget createTestWidget(Widget Function(Widget child) builder) =>
+      MultiProvider(
+        providers: [...presetProviders],
+        child: MyApp(
+          router: createRouterByNavigations(
+            presetSinglePageNavigation.navigations,
+            presetSinglePageNavigation.initialRoute,
+            (_, _, child) => builder(ResponsiveScaffold(child: child)),
+          ),
         ),
-      ],
-    ),
-  );
+      );
 
   testWidgets('show mobile scaffold when width < 800 (mobile)', (tester) async {
     // Arrange
