@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gadgets/shared/ui/navigation_component.dart';
 import 'package:gadgets/shared/view_models/appbar_view_model.dart';
+import 'package:gadgets/shared/view_models/show_menu_view_model.dart';
 import 'package:provider/provider.dart';
 
 import 'logo_component.dart';
@@ -58,13 +59,17 @@ class _NavigationRailWithLeading extends NavigationRailWrapper {
 
 class _DesktopSidebarState extends State<_DesktopSidebar> {
   bool _extended = false;
-  bool _hovered = false;
+  late ShowMenuViewModel _viewModel;
 
-  final ValueNotifier<bool> _showMenuNotifier = ValueNotifier<bool>(false);
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = ShowMenuViewModel();
+  }
 
   @override
   void dispose() {
-    _showMenuNotifier.dispose();
+    _viewModel.dispose();
     super.dispose();
   }
 
@@ -72,13 +77,8 @@ class _DesktopSidebarState extends State<_DesktopSidebar> {
     if (_extended != value) {
       setState(() {
         _extended = value;
-        _updateShowMenu();
       });
     }
-  }
-
-  void _updateShowMenu() {
-    _showMenuNotifier.value = !_extended && _hovered;
   }
 
   @override
@@ -86,18 +86,16 @@ class _DesktopSidebarState extends State<_DesktopSidebar> {
     onTap: () => _setExtended(true),
     child: MouseRegion(
       onEnter: (_) {
-        _hovered = true;
-        _updateShowMenu();
+        _viewModel.updateHover(true);
       },
       onExit: (_) {
-        _hovered = false;
-        _updateShowMenu();
+        _viewModel.updateHover(false);
       },
       child: _NavigationRailWithLeading(
         extended: _extended,
-        leading: _LogoSection(
-          showMenuNotifier: _showMenuNotifier,
-          onSetExtended: _setExtended,
+        leading: ChangeNotifierProvider.value(
+          value: _viewModel,
+          child: _LogoSection(onSetExtended: _setExtended),
         ),
       ),
     ),
@@ -120,27 +118,30 @@ class _DesktopAppbar extends StatelessWidget implements PreferredSizeWidget {
 
 // 独立的 Logo 组件，减少重建范围
 class _LogoSection extends StatelessWidget {
-  final ValueNotifier<bool> showMenuNotifier;
   final ValueSetter<bool> onSetExtended;
 
-  const _LogoSection({
-    required this.showMenuNotifier,
-    required this.onSetExtended,
-  });
+  const _LogoSection({required this.onSetExtended});
 
   @override
   Widget build(BuildContext context) {
     final Animation<double> animation = NavigationRail.extendedAnimation(
       context,
     );
+    final viewModel = context.read<ShowMenuViewModel>();
+    animation.addStatusListener((status) {
+      if (status.isDismissed) {
+        viewModel.updateCollapse(true);
+      } else {
+        viewModel.updateCollapse(false);
+      }
+    });
 
     final noChangeArea = SizedBox(
       height: kToolbarHeight - 16,
       width: NavigationRailWrapper.sidebarCollapseWidth,
       child: Center(
-        child: ValueListenableBuilder<bool>(
-          valueListenable: showMenuNotifier,
-          builder: (context, hovered, child) => hovered
+        child: Consumer<ShowMenuViewModel>(
+          builder: (context, vm, child) => vm.showMenu
               ? IconButton(
                   onPressed: () => onSetExtended(true),
                   icon: const Icon(Icons.menu),
