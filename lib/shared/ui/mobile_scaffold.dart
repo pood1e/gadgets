@@ -36,17 +36,17 @@ class _MobileDrawer extends StatelessWidget {
     width: NavigationRailWrapper.sidebarExpandWidth,
     child: Column(
       children: [
-        SafeArea(
-          child: _ExpandedLogoHeader(
-            end: IconButton(
-              onPressed: () => _closeDrawer(context),
-              icon: const Icon(Icons.close),
-            ),
-          ),
-        ),
         Expanded(
           child: Consumer<CurrentRouteViewModel>(
             builder: (context, vm, child) => NavigationRailWrapper(
+              leading: SafeArea(
+                child: _ExpandedLogoHeader(
+                  end: IconButton(
+                    onPressed: () => _closeDrawer(context),
+                    icon: const Icon(Icons.close),
+                  ),
+                ),
+              ),
               define: vm.current,
               items: context.read<NavigationViewModel>().navigations,
               onPush: (_) => _closeDrawer(context),
@@ -66,7 +66,7 @@ class _ExpandedLogoHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SizedBox(
     width: NavigationRailWrapper.sidebarExpandWidth,
-    height: kToolbarHeight,
+    height: kToolbarHeight - 16,
     child: Padding(
       padding: const EdgeInsets.only(left: 28, right: 16),
       child: Row(
