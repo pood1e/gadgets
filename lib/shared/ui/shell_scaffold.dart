@@ -18,7 +18,7 @@ class ShellScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final navigationViewModel = context.read<NavigationViewModel>();
-    final define = navigationViewModel.navigations.firstWhere(
+    final define = navigationViewModel.allRoutes.firstWhere(
       (item) => _state.fullPath == item.route.path,
     );
     return ChangeNotifierProvider.value(

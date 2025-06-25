@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 GoRouter createRouter(BuildContext context, ShellRouteBuilder shellBuilder) {
   final navigation = context.read<NavigationViewModel>();
   return createRouterByNavigations(
-    navigation.navigations,
+    navigation.allRoutes,
     navigation.initialRoute,
     shellBuilder,
   );

@@ -20,14 +20,17 @@ abstract class _MyNavigationRail extends StatelessWidget {
        _define = define,
        _onPush = onPush;
 
-  int? _currentSelected() => _items.indexWhere((item) => item == _define);
+  int? _currentSelected() {
+    int index = _items.indexWhere((item) => item == _define);
+    return index == -1 ? null : index;
+  }
 
   String translateText(BuildContext context, RouteDefine define) =>
       define.localizationOf(context).title;
 
   void _onItemSelected(BuildContext context, RouteDefine item) {
     if (item != _define) {
-      context.push(item.route.path);
+      context.go(item.route.path);
       if (_onPush != null) {
         _onPush(item);
       }

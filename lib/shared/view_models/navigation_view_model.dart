@@ -5,6 +5,7 @@ import 'package:gadgets/shared/routing/routers.dart';
 
 class NavigationViewModel {
   final List<RouteDefine> _navigations;
+  final List<RouteDefine> _appRoutes;
   final String initialRoute;
 
   Iterable<LocalizationsDelegate<dynamic>> get localizationsDelegates =>
@@ -14,11 +15,22 @@ class NavigationViewModel {
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         ..._navigations.map((item) => item.localizationDelegate),
+        ..._appRoutes.map((item) => item.localizationDelegate),
       ]);
 
   List<RouteDefine> get navigations => List.unmodifiable(_navigations);
 
-  NavigationViewModel({String? initialRoute, List<RouteDefine>? navigations})
-    : _navigations = navigations ?? navigationRouteDefines,
-      initialRoute = initialRoute ?? '/';
+  List<RouteDefine> get appRoutes =>
+      List.unmodifiable(_appRoutes);
+
+  List<RouteDefine> get allRoutes =>
+      List.unmodifiable([..._navigations, ..._appRoutes]);
+
+  NavigationViewModel({
+    String? initialRoute,
+    List<RouteDefine>? navigations,
+    List<RouteDefine>? appRoutes,
+  }) : _navigations = navigations ?? navigationRouteDefines,
+       _appRoutes = appRoutes ?? appRouteDefines,
+       initialRoute = initialRoute ?? '/';
 }

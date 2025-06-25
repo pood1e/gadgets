@@ -3,6 +3,7 @@ import 'package:gadgets/shared/routing/router.dart';
 import 'package:gadgets/shared/ui/responsive_scaffold.dart';
 import 'package:gadgets/shared/ui/shell_scaffold.dart';
 import 'package:gadgets/shared/view_models/l10n_view_model.dart';
+import 'package:gadgets/shared/view_models/layout_view_model.dart';
 import 'package:gadgets/shared/view_models/navigation_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +15,7 @@ void main() {
       providers: [
         Provider.value(value: NavigationViewModel()),
         Provider.value(value: L10nViewModel()),
+        ChangeNotifierProvider.value(value: LayoutViewModel()),
       ],
       child: const MyApp(),
     ),

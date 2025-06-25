@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gadgets/modules/apps/l10n/apps_localizations.dart';
+import 'package:gadgets/modules/apps/ui/apps.dart';
 import 'package:gadgets/modules/dashboard/l10n/dashboard_localizations.dart';
 import 'package:gadgets/modules/dashboard/ui/dashboard.dart';
 import 'package:gadgets/modules/settings/l10n/settings_localizations.dart';
@@ -23,12 +25,22 @@ class RouteDefine {
 
 final navigationRouteDefines = [
   RouteDefine(
+    id: 'apps',
+    icon: const Icon(Icons.apps),
+    localizationOf: (ctx) => AppsLocalizations.of(ctx)!,
+    localizationDelegate: AppsLocalizations.delegate,
+    route: GoRoute(
+      path: '/',
+      builder: (context, state) => const AppCenterView(),
+    ),
+  ),
+  RouteDefine(
     id: 'dashboard',
     icon: const Icon(Icons.dashboard),
     localizationOf: (ctx) => DashboardLocalizations.of(ctx)!,
     localizationDelegate: DashboardLocalizations.delegate,
     route: GoRoute(
-      path: '/',
+      path: '/dashboard',
       builder: (context, state) => const DashboardView(),
     ),
   ),
@@ -43,3 +55,5 @@ final navigationRouteDefines = [
     ),
   ),
 ];
+
+final List<RouteDefine> appRouteDefines = [];

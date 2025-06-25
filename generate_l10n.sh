@@ -16,4 +16,9 @@ flutter gen-l10n --arb-dir lib/modules/settings/l10n \
   --output-localization-file settings_localizations.dart \
   --output-class SettingsLocalizations
 
+flutter gen-l10n --arb-dir lib/modules/apps/l10n \
+  --template-arb-file intl_zh.arb \
+  --output-localization-file apps_localizations.dart \
+  --output-class AppsLocalizations
+
 echo "generate l10n successfully!"
