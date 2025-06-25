@@ -108,35 +108,6 @@ void main() {
         expect(getRouter(tester).state.path, '/');
         expect(findBackButton(), findsNothing);
       });
-
-      testWidgets('should show back button on non-root routes', (tester) async {
-        // Arrange
-        await tester.pumpWidget(createTestWidget());
-
-        // Act
-        getRouter(tester).push('/test');
-        await tester.pumpAndSettle();
-
-        // Assert
-        expect(getRouter(tester).state.path, '/test');
-        expect(findBackButton(), findsOneWidget);
-      });
-      testWidgets('should navigate back when tapped back button', (
-        tester,
-      ) async {
-        // Arrange
-        await tester.pumpWidget(createTestWidget());
-        getRouter(tester).push('/test');
-        await tester.pumpAndSettle();
-
-        // Act
-        await tester.tap(findBackButton());
-        await tester.pumpAndSettle();
-
-        // Assert
-        expect(getRouter(tester).state.path, '/');
-        expect(findBackButton(), findsNothing);
-      });
     });
   });
 }

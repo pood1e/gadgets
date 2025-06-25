@@ -93,11 +93,15 @@ class _DesktopAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) => Consumer<AppbarViewModel>(
-    builder: (context, vm, child) =>
-        AppBar(title: child, actions: vm.currentConfig.actions),
-    child: Consumer<CurrentRouteViewModel>(
-      builder: (context, vm, child) =>
-          Text(vm.current.localizationOf(context).title),
+    builder: (context, vm, child) => AppBar(
+      leading: vm.currentConfig.leading,
+      title: vm.currentConfig.title != null
+          ? Text(vm.currentConfig.title!)
+          : Consumer<CurrentRouteViewModel>(
+              builder: (context, vm, child) =>
+                  Text(vm.current.localizationOf(context).title),
+            ),
+      actions: vm.currentConfig.actions,
     ),
   );
 

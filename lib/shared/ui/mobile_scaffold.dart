@@ -4,7 +4,6 @@ import 'package:gadgets/shared/ui/navigation_component.dart';
 import 'package:gadgets/shared/view_models/appbar_view_model.dart';
 import 'package:gadgets/shared/view_models/current_route_view_model.dart';
 import 'package:gadgets/shared/view_models/navigation_view_model.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class MobileScaffold extends StatelessWidget {
@@ -84,29 +83,22 @@ class _MobileAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) => Consumer<AppbarViewModel>(
     builder: (_, barVm, _) => Consumer<CurrentRouteViewModel>(
-      builder: (_, routeVm, _) {
-        Widget? menu;
-        if (routeVm.isRoot()) {
-          menu = IconButton(
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-            icon: const Icon(Icons.menu),
-          );
-        } else {
-          menu = BackButton(
-            onPressed: () {
-              context.pop();
-            },
-          );
-        }
-        return AppBar(
-          leading: menu,
-          centerTitle: true,
-          title: Text(routeVm.current.localizationOf(context).title),
-          actions: barVm.currentConfig.actions,
-        );
-      },
+      builder: (_, routeVm, _) => AppBar(
+        leading:
+            barVm.currentConfig.leading ??
+            IconButton(
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              icon: const Icon(Icons.menu),
+            ),
+        centerTitle: true,
+        title: Text(
+          barVm.currentConfig.title ??
+              routeVm.current.localizationOf(context).title,
+        ),
+        actions: barVm.currentConfig.actions,
+      ),
     ),
   );
 

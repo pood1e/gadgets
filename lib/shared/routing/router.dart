@@ -18,7 +18,6 @@ GoRouter createRouterByNavigations(
   String initialRoute,
   ShellRouteBuilder shellBuilder,
 ) => GoRouter(
-  observers: [routeObserver],
   initialLocation: initialRoute,
   routes: [
     ShellRoute(
@@ -27,5 +26,3 @@ GoRouter createRouterByNavigations(
     ),
   ],
 );
-
-final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();

@@ -3,24 +3,29 @@ import 'package:flutter/widgets.dart';
 class AppBarConfig {
   final String id;
   final List<Widget>? actions;
+  final Widget? leading;
+  final String? title;
 
-  const AppBarConfig({required this.id, this.actions});
+  const AppBarConfig({
+    required this.id,
+    this.actions,
+    this.leading,
+    this.title,
+  });
 
-  const AppBarConfig._preset() : id = 'default', actions = null;
-
-  const factory AppBarConfig.preset() = AppBarConfig._preset;
+  factory AppBarConfig.preset() => const AppBarConfig(id: 'default');
 }
 
 class AppbarViewModel extends ChangeNotifier {
   AppbarViewModel({AppBarConfig? config})
-    : _current = config ?? const AppBarConfig.preset();
+    : _current = config ?? AppBarConfig.preset();
 
   AppBarConfig _current;
 
   AppBarConfig get currentConfig => _current;
 
   void changeConfig(AppBarConfig config) {
-    if (config != _current) {
+    if (_current != config) {
       _current = config;
       notifyListeners();
     }
