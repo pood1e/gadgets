@@ -12,7 +12,7 @@ class DashboardView extends StatelessWidget {
         AppBarConfig(
           id: 'dashboard',
           actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.cabin)),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
           ],
         ),
       );

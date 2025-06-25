@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gadgets/main.dart';
+import 'package:gadgets/shared/routing/router.dart';
 import 'package:gadgets/shared/routing/routers.dart';
 import 'package:gadgets/shared/view_models/appbar_view_model.dart';
 import 'package:gadgets/shared/view_models/l10n_view_model.dart';
@@ -67,9 +68,29 @@ Widget createSinglePageWidget(RouteDefine define) => MultiProvider(
     ),
     ChangeNotifierProvider.value(value: presetLayoutViewModel),
   ],
+  child: MyApp(
+    router: createRouterByNavigations(
+      [define],
+      define.route.path,
+      (_, _, child) => child,
+    ),
+  ),
+);
+
+Widget createShellWrappedWidget(RouteDefine define) => MultiProvider(
+  providers: [
+    Provider.value(value: L10nViewModel(locale: const Locale('en'))),
+    Provider.value(
+      value: NavigationViewModel(
+        initialRoute: define.route.path,
+        navigations: [define],
+      ),
+    ),
+    ChangeNotifierProvider.value(value: presetLayoutViewModel),
+  ],
   child: const MyApp(),
 );
 
 GoRouter getRouter(WidgetTester tester) =>
     tester.widget<MaterialApp>(find.byType(MaterialApp)).routerConfig
-    as GoRouter;
+        as GoRouter;

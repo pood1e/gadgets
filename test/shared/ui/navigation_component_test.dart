@@ -5,7 +5,6 @@ import 'package:gadgets/shared/routing/router.dart';
 import 'package:gadgets/shared/ui/navigation_component.dart';
 import 'package:gadgets/shared/ui/shell_scaffold.dart';
 import 'package:gadgets/shared/view_models/current_route_view_model.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../test_utils/test_constants.dart';
@@ -42,10 +41,6 @@ void main() {
 
     findNavigationRail(WidgetTester tester) =>
         tester.widget<NavigationRail>(find.byType(NavigationRail));
-
-    GoRouter getRouter(WidgetTester tester) =>
-        tester.widget<MaterialApp>(find.byType(MaterialApp)).routerConfig
-            as GoRouter;
 
     testWidgets('selected the default navigation item', (tester) async {
       // Arrange & Act

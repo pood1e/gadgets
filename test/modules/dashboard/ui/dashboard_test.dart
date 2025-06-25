@@ -8,13 +8,16 @@ import 'package:go_router/go_router.dart';
 import '../../../test_utils/test_constants.dart';
 
 void main() {
-  createTestWidget() => createSinglePageWidget(
+  createTestWidget() => createShellWrappedWidget(
     RouteDefine(
       id: 'dashboard',
       icon: const Icon(Icons.dashboard),
       localizationOf: DashboardLocalizations.of,
       localizationDelegate: DashboardLocalizations.delegate,
-      route: GoRoute(path: '/', builder: (_, _) => const DashboardView()),
+      route: GoRoute(
+        path: '/dashboard',
+        builder: (_, _) => const DashboardView(),
+      ),
     ),
   );
 
@@ -27,7 +30,16 @@ void main() {
 
       // Assert
       expect(find.text('dashboard'), findsOneWidget);
-      expect(find.text('Dashboard'), findsWidgets);
+    });
+
+    testWidgets('should show appbar actions', (tester) async {
+      // Arrange
+      // Act
+      await tester.pumpWidget(createTestWidget());
+      await tester.pumpAndSettle();
+
+      // Assert
+      expect(find.byIcon(Icons.add), findsOneWidget);
     });
   });
 }

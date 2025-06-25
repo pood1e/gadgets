@@ -8,18 +8,18 @@ import 'package:gadgets/shared/view_models/navigation_view_model.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+Widget configuredApp() => MultiProvider(
+  providers: [
+    Provider.value(value: NavigationViewModel()),
+    Provider.value(value: L10nViewModel()),
+    ChangeNotifierProvider.value(value: LayoutViewModel()),
+  ],
+  child: const MyApp(),
+);
+
 void main() {
   // debugPrintRebuildDirtyWidgets = true;
-  runApp(
-    MultiProvider(
-      providers: [
-        Provider.value(value: NavigationViewModel()),
-        Provider.value(value: L10nViewModel()),
-        ChangeNotifierProvider.value(value: LayoutViewModel()),
-      ],
-      child: const MyApp(),
-    ),
-  );
+  runApp(configuredApp());
 }
 
 class MyApp extends StatelessWidget {

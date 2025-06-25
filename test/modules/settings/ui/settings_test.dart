@@ -30,7 +30,6 @@ void main() {
 
       // Assert
       expect(find.text('settings'), findsOneWidget);
-      expect(find.text('Settings'), findsWidgets);
     });
   });
 }

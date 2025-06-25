@@ -5,7 +5,6 @@ import 'package:gadgets/shared/routing/router.dart';
 import 'package:gadgets/shared/ui/mobile_scaffold.dart';
 import 'package:gadgets/shared/ui/shell_scaffold.dart';
 import 'package:gadgets/shared/view_models/navigation_view_model.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../test_utils/test_constants.dart';
@@ -80,10 +79,6 @@ void main() {
         of: find.byType(AppBar),
         matching: find.byType(BackButton),
       );
-
-      GoRouter getRouter(WidgetTester tester) =>
-          tester.widget<MaterialApp>(find.byType(MaterialApp)).routerConfig
-              as GoRouter;
 
       testWidgets('should have an appbar', (tester) async {
         // Arrange
