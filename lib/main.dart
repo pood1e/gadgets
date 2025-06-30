@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gadgets/shared/routing/router.dart';
 import 'package:gadgets/shared/ui/responsive_scaffold.dart';
 import 'package:gadgets/shared/ui/shell_scaffold.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
     final l10n = context.read<L10nViewModel>();
     final navigation = context.read<NavigationViewModel>();
     return MaterialApp.router(
+      builder: FToastBuilder(),
       debugShowCheckedModeBanner: false,
       localizationsDelegates: navigation.localizationsDelegates,
       supportedLocales: l10n.supportedLocales,
