@@ -83,22 +83,26 @@ class _MobileAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) => Consumer<AppbarViewModel>(
     builder: (_, barVm, _) => Consumer<CurrentRouteViewModel>(
-      builder: (_, routeVm, _) => AppBar(
-        leading:
-            barVm.currentConfig.leading ??
-            IconButton(
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-              icon: const Icon(Icons.menu),
-            ),
-        centerTitle: true,
-        title: Text(
-          barVm.currentConfig.title ??
-              routeVm.current.localizationOf(context).title,
-        ),
-        actions: barVm.currentConfig.actions,
-      ),
+      builder: (_, routeVm, _) {
+        final actions =
+            barVm.currentConfig.actions ?? const [SizedBox.shrink()];
+        return AppBar(
+          leading:
+              barVm.currentConfig.leading ??
+              IconButton(
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                icon: const Icon(Icons.menu),
+              ),
+          centerTitle: true,
+          title: Text(
+            barVm.currentConfig.title ??
+                routeVm.current.localizationOf(context).title,
+          ),
+          actions: [...actions, const SizedBox(width: 8)],
+        );
+      },
     ),
   );
 
