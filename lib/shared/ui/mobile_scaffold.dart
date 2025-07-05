@@ -15,7 +15,7 @@ class MobileScaffold extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
     appBar: const _MobileAppbar(),
     drawer: const _MobileDrawer(),
-    body: _child,
+    body: SafeArea(child: _child),
   );
 }
 
