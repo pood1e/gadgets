@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
 
-class MyTip extends StatelessWidget {
+enum TipType {
+  success(color: Colors.greenAccent, icon: Icon(Icons.check)),
+  info(color: Colors.grey, icon: Icon(Icons.info)),
+  warning(color: Colors.yellowAccent, icon: Icon(Icons.warning)),
+  error(color: Colors.redAccent, icon: Icon(Icons.close));
+
+  final Color color;
+  final Icon icon;
+
+  const TipType({required this.color, required this.icon});
+}
+
+class Tip extends StatelessWidget {
   final TipType _type;
   final String _message;
 
-  const MyTip({super.key, required TipType type, required String message})
+  const Tip({super.key, required TipType type, required String message})
     : _type = type,
       _message = message;
 
@@ -26,16 +38,4 @@ class MyTip extends StatelessWidget {
       ],
     ),
   );
-}
-
-enum TipType {
-  success(color: Colors.greenAccent, icon: Icon(Icons.check)),
-  info(color: Colors.grey, icon: Icon(Icons.info)),
-  warning(color: Colors.yellowAccent, icon: Icon(Icons.warning)),
-  error(color: Colors.redAccent, icon: Icon(Icons.close));
-
-  final Color color;
-  final Icon icon;
-
-  const TipType({required this.color, required this.icon});
 }
