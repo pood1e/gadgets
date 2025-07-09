@@ -1,6 +1,11 @@
 {
-  "@@locale": "zh",
-  "title": "小工具",
-  "dashboard": "仪表盘",
-  "settings": "设置"
+    "@@locale": "zh",
+    "title": "小工具",
+    "dashboard": "仪表盘",
+    "settings": "设置",
+    "timeunit_splitter": "",
+    "timeunit_day": "天",
+    "timeunit_hour": "时",
+    "timeunit_minute": "分",
+    "timeunit_second": "秒"
 }
