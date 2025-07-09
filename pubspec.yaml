@@ -27,6 +27,8 @@ dependencies:
   path: ^1.9.1
   flutter_svg: ^2.2.0
   fluttertoast: ^8.2.12
+  shimmer: ^3.0.0
+  filesize: ^2.0.1
 
 dev_dependencies:
   flutter_test:
