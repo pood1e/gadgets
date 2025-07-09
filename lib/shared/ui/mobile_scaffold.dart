@@ -96,10 +96,9 @@ class _MobileAppbar extends StatelessWidget implements PreferredSizeWidget {
                 icon: const Icon(Icons.menu),
               ),
           centerTitle: true,
-          title: Text(
-            barVm.currentConfig.title ??
-                routeVm.current.localizationOf(context).title,
-          ),
+          title:
+              barVm.currentConfig.title ??
+              Text(routeVm.current.localizationOf(context).title),
           actions: [...actions, const SizedBox(width: 8)],
         );
       },

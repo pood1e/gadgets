@@ -4,7 +4,7 @@ class AppBarConfig {
   final String id;
   final List<Widget>? actions;
   final Widget? leading;
-  final String? title;
+  final Widget? title;
 
   const AppBarConfig({
     required this.id,
