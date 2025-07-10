@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gadgets/modules/apps/l10n/apps_localizations.dart';
 import 'package:gadgets/modules/apps/ui/apps.dart';
+import 'package:gadgets/modules/clipboard/l10n/clipboard_localizations.dart';
+import 'package:gadgets/modules/clipboard/main.dart';
 import 'package:gadgets/modules/dashboard/l10n/dashboard_localizations.dart';
 import 'package:gadgets/modules/dashboard/ui/dashboard.dart';
 import 'package:gadgets/modules/settings/l10n/settings_localizations.dart';
@@ -56,4 +59,15 @@ final navigationRouteDefines = [
   ),
 ];
 
-final List<RouteDefine> appRouteDefines = [];
+final List<RouteDefine> appRouteDefines = [
+  RouteDefine(
+    id: 'clipboard',
+    icon: SvgPicture.asset('assets/svg/clipboard.svg'),
+    localizationOf: (ctx) => ClipboardLocalizations.of(ctx)!,
+    localizationDelegate: ClipboardLocalizations.delegate,
+    route: GoRoute(
+      path: '/clipboard',
+      builder: (context, state) => const ClipboardApp(),
+    ),
+  ),
+];

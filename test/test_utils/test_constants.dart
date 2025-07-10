@@ -91,6 +91,22 @@ Widget createShellWrappedWidget(RouteDefine define) => MultiProvider(
   child: const MyApp(),
 );
 
+
+Widget createShellWrappedApp(RouteDefine define) => MultiProvider(
+  providers: [
+    Provider.value(value: L10nViewModel(locale: const Locale('en'))),
+    Provider.value(
+      value: NavigationViewModel(
+        initialRoute: define.route.path,
+        navigations: [],
+        appRoutes: [define]
+      ),
+    ),
+    ChangeNotifierProvider.value(value: presetLayoutViewModel),
+  ],
+  child: const MyApp(),
+);
+
 GoRouter getRouter(WidgetTester tester) =>
     tester.widget<MaterialApp>(find.byType(MaterialApp)).routerConfig
         as GoRouter;
