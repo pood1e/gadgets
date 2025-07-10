@@ -127,6 +127,8 @@ class ClipboardConfigUseCase {
   void dispose() {
     _subscription.cancel();
     _stateSubscription.cancel();
+    _configController.close();
+    _availableController.close();
   }
 }
 
