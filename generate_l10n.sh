@@ -21,4 +21,9 @@ flutter gen-l10n --arb-dir lib/modules/apps/l10n \
   --output-localization-file apps_localizations.dart \
   --output-class AppsLocalizations
 
+flutter gen-l10n --arb-dir lib/modules/clipboard/l10n \
+  --template-arb-file intl_zh.arb \
+  --output-localization-file clipboard_localizations.dart \
+  --output-class ClipboardLocalizations
+
 echo "generate l10n successfully!"
