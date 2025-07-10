@@ -35,8 +35,8 @@ void main() {
         err = e;
       }
 
-      expect(err, isA<ErrorResponse>());
-      expect((err as ErrorResponse).message, contains('network error'));
+      expect(err, isA<ApiClientException>());
+      expect((err as ApiClientException).message, contains('network error'));
     });
 
     test('get', () async {

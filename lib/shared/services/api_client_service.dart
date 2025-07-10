@@ -5,12 +5,12 @@ import 'package:gadgets/shared/services/sse_service.dart';
 import 'package:gadgets/shared/utils/wrapped_logger.dart';
 import 'package:http/http.dart' as http;
 
-class ErrorResponse {
+class ApiClientException {
   final Uri uri;
   final int code;
   final String message;
 
-  ErrorResponse({required this.uri, required this.code, required this.message});
+  ApiClientException({required this.uri, required this.code, required this.message});
 }
 
 class ApiClientService {
@@ -33,7 +33,7 @@ class ApiClientService {
       return await doRequest(replaced);
     } catch (err) {
       _logger.e("request error: $err, uri=$replaced");
-      throw ErrorResponse(message: err.toString(), uri: replaced, code: 0);
+      throw ApiClientException(message: err.toString(), uri: replaced, code: 0);
     }
   }
 
