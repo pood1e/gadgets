@@ -461,26 +461,6 @@ void main() {
       useCase.dispose();
     });
 
-    test('init data success', () async {
-      Completer<DataChangeState> completer = Completer();
-      late StreamSubscription<DataChangeState> subscription;
-      subscription = useCase.stream.listen((state) {
-        subscription.cancel();
-        completer.complete(state);
-      });
-
-      controller.add(
-        const NotifyInit(
-          cursor: 1,
-          usage: ClipboardUsage(timestamp: 1, count: 1, bytes: 1),
-          config: ClipboardConfig(maxBytes: 2048, maxCount: 50, expire: 60),
-        ),
-      );
-      final result = await completer.future;
-
-      expect(result, isA<DataAllRemovedState>());
-    });
-
     test('add data success', () async {
       Completer<DataChangeState> completer = Completer();
       late StreamSubscription<DataChangeState> subscription;
@@ -543,11 +523,27 @@ void main() {
     test('clear data success', () async {
       Completer<DataChangeState> completer = Completer();
       late StreamSubscription<DataChangeState> subscription;
+      int count = 1;
       subscription = useCase.stream.listen((state) {
-        subscription.cancel();
-        completer.complete(state);
+        if (count == 2) {
+          subscription.cancel();
+          completer.complete(state);
+        }
+        count++;
       });
 
+      controller.add(
+        const NotifyAdd(
+          meta: ClipboardMessageMeta(
+            id: "id",
+            preview: "test",
+            length: 4,
+            bytes: 4,
+            timestamp: 1,
+          ),
+          usage: ClipboardUsage(timestamp: 1, count: 1, bytes: 4),
+        ),
+      );
       controller.add(
         const NotifyClear(
           usage: ClipboardUsage(timestamp: 1, count: 0, bytes: 0),
@@ -557,6 +553,7 @@ void main() {
 
       expect(result, isA<DataAllRemovedState>());
     });
+
     test('scan data success', () async {
       Completer<DataChangeState> completer = Completer();
       late StreamSubscription<DataChangeState> subscription;
@@ -589,7 +586,7 @@ void main() {
       late StreamSubscription<DataChangeState> subscription;
       int count = 1;
       subscription = useCase.stream.listen((state) {
-        if (count == 3) {
+        if (count == 2) {
           subscription.cancel();
           completer.complete(state);
         }

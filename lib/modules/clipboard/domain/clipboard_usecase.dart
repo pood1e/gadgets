@@ -419,7 +419,9 @@ class ClipboardDataUseCase {
   }
 
   void _clear() {
-    _controller.add(DataAllRemovedState());
+    if(_metas.isNotEmpty) {
+      _controller.add(DataAllRemovedState());
+    }
     _metas.clear();
     _removed.clear();
     _timer?.cancel();
@@ -456,7 +458,7 @@ class ClipboardDataUseCase {
   }
 
   void _checkExpired() {
-    if (_metas.isEmpty || _expireTime == null) {
+    if (_metas.isEmpty || _expireTime == null || _expireTime == 0) {
       return;
     }
     final now = DateTime.now().millisecondsSinceEpoch;
@@ -477,7 +479,7 @@ class ClipboardDataUseCase {
 
   void _setNextTimer() {
     _timer?.cancel();
-    if (_metas.isEmpty || _expireTime == null) {
+    if (_metas.isEmpty || _expireTime == null || _expireTime == 0) {
       return;
     }
     final passed =
