@@ -62,7 +62,6 @@ abstract class ClipboardUsage with _$ClipboardUsage {
 abstract class ClipboardScanResult with _$ClipboardScanResult {
   const factory ClipboardScanResult({
     List<ClipboardMessageMeta>? messages,
-    int? earliest,
     int? cursor,
   }) = _ClipboardScanResult;
 
