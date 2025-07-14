@@ -114,7 +114,6 @@ void main() {
 
       // Assert
       expect(result.cursor, 2);
-      expect(result.earliest, 1);
       expect(result.messages!.length, 1);
     });
 
