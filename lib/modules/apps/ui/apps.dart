@@ -13,7 +13,7 @@ const _verticalCardSpace = 8.0;
 const _horizontalCardWidth = 200.0;
 const _horizontalCardHeight = 96.0;
 const _horizontalRatio = _horizontalCardWidth / _horizontalCardHeight;
-// const _horizontalCardSpace = 8.0;
+const _horizontalCardSpace = 4.0;
 const _minSpace = 16.0;
 
 class AppCenterView extends StatelessWidget {
@@ -147,7 +147,7 @@ class _HorizontalCard extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                // spacing: _horizontalCardSpace,
+                spacing: _horizontalCardSpace,
                 children: [
                   SizedBox(width: 64, height: 64, child: _define.icon),
                   Expanded(
