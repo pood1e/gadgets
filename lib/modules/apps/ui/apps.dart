@@ -154,7 +154,7 @@ class _HorizontalCard extends StatelessWidget {
                     child: Center(
                       child: Text(
                         _define.localizationOf(context).title,
-                        style: Theme.of(context).textTheme.titleSmall,
+                        style: Theme.of(context).textTheme.titleMedium,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                       ),
