@@ -10,7 +10,7 @@ import 'package:gadgets/modules/clipboard/l10n/clipboard_tip_l10n.dart';
 import 'package:gadgets/modules/clipboard/view_models/clipboard_view_model.dart';
 import 'package:gadgets/shared/l10n/app_localizations.dart';
 import 'package:gadgets/shared/services/sse_service.dart';
-import 'package:gadgets/shared/ui/toast_component.dart';
+import 'package:gadgets/shared/ui/component/toast_component.dart';
 import 'package:gadgets/shared/utils/support_layout.dart';
 import 'package:gadgets/shared/utils/unit_formater.dart';
 import 'package:gadgets/shared/view_models/appbar_view_model.dart';

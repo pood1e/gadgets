@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gadgets/main.dart';
 import 'package:gadgets/shared/routing/router.dart';
-import 'package:gadgets/shared/ui/navigation_component.dart';
-import 'package:gadgets/shared/ui/shell_scaffold.dart';
+import 'package:gadgets/shared/ui/component/navigation_component.dart';
+import 'package:gadgets/shared/ui/scaffold/shell_scaffold.dart';
 import 'package:gadgets/shared/view_models/current_route_view_model.dart';
 import 'package:provider/provider.dart';
 

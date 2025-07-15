@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gadgets/shared/routing/router.dart';
 import 'package:gadgets/shared/services/api_client_service.dart';
-import 'package:gadgets/shared/ui/responsive_scaffold.dart';
-import 'package:gadgets/shared/ui/shell_scaffold.dart';
+import 'package:gadgets/shared/ui/scaffold/responsive_scaffold.dart';
+import 'package:gadgets/shared/ui/scaffold/shell_scaffold.dart';
 import 'package:gadgets/shared/view_models/l10n_view_model.dart';
 import 'package:gadgets/shared/view_models/layout_view_model.dart';
 import 'package:gadgets/shared/view_models/navigation_view_model.dart';
@@ -17,7 +17,8 @@ Widget configuredApp() => MultiProvider(
     ChangeNotifierProvider.value(value: LayoutViewModel()),
     Provider(
       create: (_) =>
-          ApiClientService(baseUrl: 'https://gadgets.pood1e.site:8443'),
+          // ApiClientService(baseUrl: 'https://gadgets.pood1e.site:8443'),
+          ApiClientService(baseUrl: 'http://localhost:8080'),
       dispose: (_, service) => service.dispose(),
     ),
   ],

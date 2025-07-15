@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gadgets/shared/ui/logo_component.dart';
+import 'package:gadgets/shared/ui/component/logo_component.dart';
 
 void main() {
   testWidgets('logo rebuild success', (tester) async {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gadgets/shared/ui/desktop_scaffold.dart';
-import 'package:gadgets/shared/ui/mobile_scaffold.dart';
+import 'package:gadgets/shared/ui/scaffold/desktop_scaffold.dart';
+import 'package:gadgets/shared/ui/scaffold/mobile_scaffold.dart';
 import 'package:gadgets/shared/utils/support_layout.dart';
 import 'package:gadgets/shared/view_models/appbar_view_model.dart';
 import 'package:gadgets/shared/view_models/layout_view_model.dart';

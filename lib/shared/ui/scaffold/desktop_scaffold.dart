@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:gadgets/shared/ui/navigation_component.dart';
+import 'package:gadgets/shared/ui/component/navigation_component.dart';
 import 'package:gadgets/shared/view_models/appbar_view_model.dart';
 import 'package:gadgets/shared/view_models/current_route_view_model.dart';
 import 'package:gadgets/shared/view_models/navigation_view_model.dart';
 import 'package:gadgets/shared/view_models/show_menu_view_model.dart';
 import 'package:provider/provider.dart';
 
-import 'logo_component.dart';
+import '../component/logo_component.dart';
 
 class DesktopScaffold extends StatelessWidget {
   final Widget _child;

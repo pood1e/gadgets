@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gadgets/shared/ui/logo_component.dart';
-import 'package:gadgets/shared/ui/navigation_component.dart';
+import 'package:gadgets/shared/ui/component/logo_component.dart';
+import 'package:gadgets/shared/ui/component/navigation_component.dart';
 import 'package:gadgets/shared/view_models/appbar_view_model.dart';
 import 'package:gadgets/shared/view_models/current_route_view_model.dart';
 import 'package:gadgets/shared/view_models/navigation_view_model.dart';

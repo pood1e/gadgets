@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gadgets/main.dart';
 import 'package:gadgets/shared/routing/router.dart';
-import 'package:gadgets/shared/ui/desktop_scaffold.dart';
-import 'package:gadgets/shared/ui/shell_scaffold.dart';
+import 'package:gadgets/shared/ui/scaffold/desktop_scaffold.dart';
+import 'package:gadgets/shared/ui/scaffold/shell_scaffold.dart';
 import 'package:gadgets/shared/view_models/navigation_view_model.dart';
 import 'package:provider/provider.dart';
 
